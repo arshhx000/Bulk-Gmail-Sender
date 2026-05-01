@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gmail Bulk Mail Sender</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="console">
+    <section class="topbar panel">
+      <div class="brand-wrap">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <p class="brand">FLURR MAIL</p>
+      </div>
+
+  <div class="setup-guide-link">
+    <a href="https://github.com/arshhx000/Bulk-Gmail-Sender">See The Setup Guide →</a>
+  </div>
+</div>
+      <div class="top-indicators" aria-hidden="true">
+        <span class="led led-a"></span>
+        <span class="led led-b"></span>
+        <span class="led led-c"></span>
+      </div>
+    </section>
+
+
+    <section class="overview-grid">
+      <div class="panel quick-panel">
+        <h3>Quick Actions</h3>
+        <div class="icon-grid" aria-hidden="true">
+          <span class="icon-chip icon-mail">MAIL</span>
+          <span class="icon-chip icon-template">TPL</span>
+          <span class="icon-chip icon-csv">CSV</span>
+          <span class="icon-chip icon-pdf">PDF</span>
+        </div>
+        <p class="subtitle">Keep your files ready, pick a preset, and run a small test batch first.</p>
+      </div>
+
+      <div class="panel preview-panel">
+        <h3>Live Template Preview</h3>
+        <div id="previewContent" class="preview-content">Type your template to see preview.</div>
+      </div>
+
+      <div class="panel helper-panel">
+        <h3>Detected CSV Fields</h3>
+        <ul id="detectedList" class="helper-list compact">No file loaded.</ul>
+      </div>
+    </section>
+
+    <section class="panel compose-panel">
+      <div class="compose-header">
+        <div>
+          <h1>Gmail Bulk Mail Sender</h1>
+          <p class="subtitle">Upload CSV, auto-format your message template, and match ZIP PDFs by filename.</p>
+        </div>
+        <div class="header-badges" aria-hidden="true">
+          <span class="badge">AUTO</span>
+          <span class="badge">ZIP</span>
+          <span class="badge">HTML</span>
+        </div>
+      </div>
+
+      <form id="bulkForm" class="form-grid">
+        <label>Gmail Address
+          <input type="email" name="gmail" required placeholder="you@gmail.com" />
+        </label>
+
+        <label>API Server URL
+          <input type="url" name="apiBaseUrl" placeholder="https://your-backend.com (optional on localhost)" />
+        </label>
+
+        <label>Gmail App Password
+          <input type="password" name="appPassword" required placeholder="16-character app password" />
+        </label>
+
+        <label>Template Preset
+          <select id="templatePreset">
+            <option value="custom">Custom</option>
+            <option value="welcome">Welcome</option>
+            <option value="promo">Promotion</option>
+            <option value="followup">Follow-Up</option>
+            <option value="onboarding">Onboarding</option>
+            <option value="event">Event Invite</option>
+            <option value="reminder">Gentle Reminder</option>
+            <option value="invoice">Invoice / Receipt</option>
+            <option value="renewal">Renewal Notice</option>
+            <option value="feedback">Feedback Request</option>
+          </select>
+        </label>
+
+        
+
+        <div class="token-row">
+          <button class="token-btn" type="button" data-target="subjectTemplate" data-token="{{name}}">+ {{name}}</button>
+          <button class="token-btn" type="button" data-target="bodyTemplate" data-token="{{company}}">+ {{company}}</button>
+          <button class="token-btn" type="button" data-target="bodyTemplate" data-token="{{date}}">+ {{date}}</button>
+          <button class="token-btn" type="button" data-target="bodyTemplate" data-token="{{unsubscribe_link}}">+ {{unsubscribe_link}}</button>
+        </div>
+
+        <label>Subject Template
+          <input type="text" name="subjectTemplate" required placeholder="Hi {{name}}, your update" />
+        </label>
+
+        <label>Body Template
+          <textarea name="bodyTemplate" rows="8" required placeholder="Hello {{name}},\nThis is your message."></textarea>
+        </label>
+
+        <label>Sender Name (for signature)
+          <input type="text" name="senderName" placeholder="Team Flurr" />
+        </label>
+
+        <div class="tools-row">
+          <label class="toggle-line">
+            <input type="checkbox" name="autoFormat" checked />
+            <span>Auto format template before sending</span>
+          </label>
+          <button type="button" class="token-btn strong-btn" id="applyAutoFormat">Auto Format Now</button>
+        </div>
+
+        <label>CSV File
+          <span class="file-row">
+            <input id="csvFileInput" class="file-input" type="file" name="csvFile" accept=".csv,text/csv" required />
+            <label class="file-button" for="csvFileInput">Choose CSV</label>
+            <span class="file-name">No file chosen</span>
+          </span>
+        </label>
+
+        <label>PDF ZIP (optional)
+          <span class="file-row">
+            <input id="zipFileInput" class="file-input" type="file" name="imageZip" accept=".zip,application/zip" />
+            <label class="file-button" for="zipFileInput">Choose ZIP</label>
+            <span class="file-name">No file chosen</span>
+          </span>
+        </label>
+
+        <label>Global Image (attach to all users)
+          <span class="file-row">
+            <input id="globalImageInput" class="file-input" type="file" name="globalImage" accept=".png,.jpg,.jpeg,.webp,.gif,image/*" />
+            <label class="file-button" for="globalImageInput">Choose Image</label>
+            <span class="file-name">No file chosen</span>
+          </span>
+        </label>
+
+        <label>Global Link (add for all users)
+          <input type="url" name="globalLink" placeholder="https://your-link.com" />
+        </label>
+
+        <label class="toggle-line">
+          <input type="checkbox" name="attachImagesByName" checked />
+          <span>Attach matching PDF from ZIP (filename = person's name)</span>
+        </label>
+
+        <p class="hint">ZIP example: <code>arshad.pdf</code>, <code>john.pdf</code>. Match uses name/full_name and email username fallback.</p>
+
+        <button type="submit" id="sendBtn">TRANSMIT BULK MAIL</button>
+      </form>
+    </section>
+
+    <section id="result" class="panel result-panel hidden"></section>
+  </main>
+
+  <footer class="footer">
+  <p>
+    © 2026 Build By Md Arshad Alam• 
+    <a href="https://github.com/arshhx000" target="_blank">
+      GitHub
+    </a>
+  </p>
+</footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
